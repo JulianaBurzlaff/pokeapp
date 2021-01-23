@@ -9,6 +9,7 @@ import Header from '../../Components/Header'
 import { useCatchedPokemons } from '../../hooks/useCatchedPokemons';
 import * as S from './styled';
 
+
 const ENDPOINT = 'https://pokeapi.co/api/v2/pokemon?limit=1118'
 const PAGE_LIMIT = 20;
 
@@ -18,6 +19,7 @@ function App(props) {
     dropPokemon,
     isCatchedPokemon 
   } = useCatchedPokemons()
+  const [searchValue, setSearchValue] = useState('')
   const [loading, setLoading] = useState(true)
   const [pokemons, setPokemons] = useState([])
   const [pages, setPages] = useState(0)
@@ -49,16 +51,29 @@ function App(props) {
     }
   }
 
+  const filteredPokemons = useMemo(() => {
+    return pokemons.filter(pokemon => pokemon.name.includes(searchValue))
+  }, [searchValue, pokemons])
+
   const pokemonList = useMemo(() => {
     const index = page * PAGE_LIMIT;
     const offset = index + PAGE_LIMIT;
 
-    return pokemons.slice(index, offset)
-  }, [pokemons, page])
+    return filteredPokemons.slice(index, offset)
+  }, [filteredPokemons, page])
+
+  const onSearchChange = (event) => {
+    const value = event.target.value
+    const list = pokemons.filter(pokemon => pokemon.name.includes(value))
+
+    setSearchValue(value)
+    setPage(0)
+    setPages(Math.ceil(list.length / PAGE_LIMIT))
+  }
 
   return ( 
     <>
-      <Header />
+      <Header searchValue={searchValue} onSearchChange={onSearchChange} />
       <S.PokeList>
         {loading ? (
           <Grid container={true} alignItems="center" justify="center">

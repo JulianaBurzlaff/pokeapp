@@ -65,7 +65,7 @@ export const Pokemon = ({ url, isCatchedPokemon, onButtonClick }) => {
             onClick={() => onButtonClick(url)} 
             disabled={false}
             variant="contained"
-            color="primary"
+            color={isCatchedPokemon ? "default" : "primary"}
           >
             {isCatchedPokemon ? 'Drop it!' : 'Catch!'}
           </Button>
