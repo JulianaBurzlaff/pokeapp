@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState }from 'react';
 import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,7 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 
-const Header: React.Component = props => {
+
+const Header: React.Component = ({ searchValue, onSearchChange }) => {
   const history = useHistory();
 
   return (
@@ -21,8 +22,18 @@ const Header: React.Component = props => {
             </Typography>
           </Grid>
           <Grid container={true} item={true} xs={6} alignItems="center">
-            <SearchIcon />
-            <InputBase style={{ width: '80%', color: '#fff', marginLeft: 10 }} placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+            {onSearchChange && (
+              <>
+                <SearchIcon />
+                <InputBase 
+                  style={{ width: '80%', color: '#fff', marginLeft: 10 }} 
+                  placeholder="Search…"  
+                  inputProps={{ 'aria-label': 'search' }} 
+                  value={searchValue}
+                  onChange={onSearchChange}
+               />
+              </>
+            )}
           </Grid>
           <Grid container={true} item={true} xs={4} justify="flex-end">
             <Button onClick={() => history.push('/')} color="inherit">POKEDEX</Button>
