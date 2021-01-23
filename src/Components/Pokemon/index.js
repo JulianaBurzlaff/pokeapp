@@ -6,14 +6,14 @@ import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
-import Skeleton from '@material-ui/lab/Skeleton';
+import { useCatchedPokemons } from '../../hooks/useCatchedPokemons';
 import PokemonLoader from '../PokemonLoader';
 
-export const Pokemon = ({ url, onButtonClick, buttonLabel }) => {
+export const Pokemon = ({ url, isCatchedPokemon, onButtonClick }) => {
   const [loading, setLoading] = useState(true)
   const [pokemon, setPokemon] = useState({})
 
-  function search() {
+  function fetchPokemon() { 
     axios.get(url).then(response => {
       setPokemon(response.data);
       setLoading(false)
@@ -21,7 +21,7 @@ export const Pokemon = ({ url, onButtonClick, buttonLabel }) => {
   }
 
   useEffect(() => {
-    search();
+    fetchPokemon();
   }, [])
 
   const image = useMemo(() => {
@@ -62,12 +62,12 @@ export const Pokemon = ({ url, onButtonClick, buttonLabel }) => {
         </Grid>
         <Grid item={true} xs={2} sm={3} md={2} container={true} alignItems="center">
           <Button 
-            onClick={onButtonClick} 
+            onClick={() => onButtonClick(url)} 
             disabled={false}
             variant="contained"
             color="primary"
           >
-            {buttonLabel}
+            {isCatchedPokemon ? 'Drop it!' : 'Catch!'}
           </Button>
         </Grid>
       </Grid>
