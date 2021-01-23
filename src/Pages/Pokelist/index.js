@@ -1,6 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -25,8 +24,6 @@ function App(props) {
   const [page, setPage] = useState(0)
 
   function search() {
-    const offset = (page - 1) * 20;
-
     axios.get(ENDPOINT).then(response => {
       const { count, results } = response.data;
 
